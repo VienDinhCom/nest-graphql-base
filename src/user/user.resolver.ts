@@ -21,6 +21,6 @@ export class UserResolver {
   @Mutation(() => User)
   createUser(@Args('data') data: UserInput): Promise<User> {
     const user = new User();
-    return this.userRepository.save({ ...user, ...data });
+    return this.userRepository.save({ user, ...data });
   }
 }
