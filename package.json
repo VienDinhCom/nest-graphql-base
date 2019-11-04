@@ -1,8 +1,8 @@
 {
   "name": "nest-graphql-base",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Nest GraphQL Base",
+  "author": "Vien Dinh",
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
