@@ -1,11 +1,9 @@
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User } from './user.model';
 import { UserInput } from './user.dto';
 
-@Injectable()
 @Resolver(() => User)
 export class UserResolver {
   constructor(
