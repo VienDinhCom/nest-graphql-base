@@ -22,12 +22,6 @@ export class UserResolver {
     return context.req.user;
   }
 
-  @Query(() => Boolean)
-  async userExistsByFid(@Args('fid') fid: string): Promise<boolean> {
-    const user = await this.userRepository.findOne({ where: { fid } });
-    return user ? true : false;
-  }
-
   @Mutation(() => User)
   @UseGuards(GqlAuthGuard)
   async createMe(
