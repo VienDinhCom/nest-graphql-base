@@ -20,6 +20,19 @@ export class UserResolver {
     return context.req.user;
   }
 
+  @Query(() => Boolean)
+  async userExistsByFid(@Args('fid') fid: string): Promise<boolean> {
+    const user = await this.userRepository.findOne({ where: { fid } });
+    return user ? true : false;
+  }
+
+  // @Mutation(() => User)
+  // updateUser(@Args('data') data: UserInput): Promise<User> {
+  //   const user = new User();
+
+  //   return this.userRepository.save({ user, ...data });
+  // }
+
   // @Query(() => [User])
   // @UseGuards(GqlAuthGuard)
   // users(@Context() context: any): Promise<User[]> {

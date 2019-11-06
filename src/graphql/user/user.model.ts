@@ -1,18 +1,22 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
   Entity,
-  PrimaryColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity()
 @ObjectType()
 export class User {
   @Field(() => ID)
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Field()
+  @Column({ unique: true })
+  fid: string;
 
   @Field()
   email: string;
@@ -29,9 +33,9 @@ export class User {
   @Field({ nullable: true })
   phone: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ nullable: true })
   createdAt: string;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ nullable: true })
   updatedAt: string;
 }
