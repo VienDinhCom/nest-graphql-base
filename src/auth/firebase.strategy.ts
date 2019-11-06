@@ -1,3 +1,4 @@
+import { get, isUndefined } from 'lodash';
 import * as dotenv from 'dotenv';
 import * as admin from 'firebase-admin';
 import { PassportStrategy } from '@nestjs/passport';
@@ -23,12 +24,23 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
 
   async validate(token: string) {
     try {
-      const user = await admin.auth().verifyIdToken(token, true);
+      const { uid } = await admin.auth().verifyIdToken(token, true);
+      const user = await admin.auth().getUser(uid);
+
+      const id = get(user, 'uid');
+      const email = get(user, 'email');
+      const verified = get(user, 'emailVerified');
+      const name = get(user, 'displayName');
+      const image = get(user, 'photoURL');
+      const phone = get(user, 'phoneNumber');
 
       return {
-        id: user.uid,
-        email: user.email,
-        verified: user.email_verified,
+        id,
+        email,
+        verified,
+        name,
+        image,
+        phone,
       };
     } catch (error) {
       throw new UnauthorizedException(error.message);

@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import {
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
@@ -11,7 +11,7 @@ import {
 @ObjectType()
 export class User {
   @Field(() => ID)
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: string;
 
   @Field()
@@ -19,6 +19,15 @@ export class User {
 
   @Field()
   verified: boolean;
+
+  @Field()
+  name: string;
+
+  @Field({ nullable: true })
+  image: string;
+
+  @Field({ nullable: true })
+  phone: string;
 
   @CreateDateColumn()
   createdAt: string;
