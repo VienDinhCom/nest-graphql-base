@@ -1,4 +1,4 @@
-import { get, isUndefined } from 'lodash';
+import { get } from 'lodash';
 import * as dotenv from 'dotenv';
 import * as admin from 'firebase-admin';
 import { PassportStrategy } from '@nestjs/passport';
