@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User } from './user.model';
 import { UserInput } from './user.dto';
+import { ContextType } from '../graphql.context';
 import { GqlAuthGuard } from '../../auth/auth.guard';
 
 @Resolver(() => User)
@@ -15,7 +16,7 @@ export class UserResolver {
 
   @Query(() => User)
   @UseGuards(GqlAuthGuard)
-  me(@Context() context: any): Promise<User[]> {
+  me(@Context() context: ContextType): User {
     return context.req.user;
   }
 
