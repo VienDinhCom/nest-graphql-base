@@ -1,4 +1,3 @@
-import * as dotenv from 'dotenv';
 import { Repository } from 'typeorm';
 import * as admin from 'firebase-admin';
 import { InjectRepository } from '@nestjs/typeorm';

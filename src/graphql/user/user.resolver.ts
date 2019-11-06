@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
-import { UseGuards, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UseGuards, BadRequestException } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User } from './user.model';
 import { UserInput } from './user.dto';
