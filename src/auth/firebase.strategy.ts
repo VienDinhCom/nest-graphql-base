@@ -6,21 +6,14 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-firebase-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '../graphql/user/user.model';
-
-dotenv.config();
-
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
-});
+import { FirebaseService } from '../services/firebase.service';
 
 @Injectable()
 export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly firebaseService: FirebaseService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -29,7 +22,9 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
 
   async validate(token: string) {
     try {
-      const { uid } = await admin.auth().verifyIdToken(token, true);
+      const { uid } = await this.firebaseService
+        .auth()
+        .verifyIdToken(token, true);
       const {
         email,
         emailVerified,

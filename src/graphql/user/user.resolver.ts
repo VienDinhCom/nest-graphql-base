@@ -1,17 +1,19 @@
 import { Repository } from 'typeorm';
-import { UseGuards, Req } from '@nestjs/common';
+import { UseGuards, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User } from './user.model';
 import { UserInput } from './user.dto';
 import { ContextType } from '../graphql.context';
 import { GqlAuthGuard } from '../../auth/auth.guard';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Resolver(() => User)
 export class UserResolver {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly firebaseService: FirebaseService,
   ) {}
 
   @Query(() => User)
@@ -26,12 +28,49 @@ export class UserResolver {
     return user ? true : false;
   }
 
-  // @Mutation(() => User)
-  // updateUser(@Args('data') data: UserInput): Promise<User> {
-  //   const user = new User();
+  @Mutation(() => User)
+  @UseGuards(GqlAuthGuard)
+  async createMe(
+    @Args('data') data: UserInput,
+    @Context() context: ContextType,
+  ): Promise<User> {
+    const firebaseUser = context.req.user;
 
-  //   return this.userRepository.save({ user, ...data });
-  // }
+    let user = await this.userRepository.findOne({
+      where: { fid: firebaseUser.fid },
+    });
+
+    if (user) throw new BadRequestException('User has been created.');
+
+    user = await this.userRepository.save({
+      ...new User(),
+      ...firebaseUser,
+      ...data,
+    });
+
+    await this.firebaseService.auth().updateUser(firebaseUser.fid, {
+      displayName: data.name,
+      photoURL: data.image,
+    });
+
+    return user;
+  }
+
+  @Mutation(() => User)
+  @UseGuards(GqlAuthGuard)
+  async updateMe(
+    @Args('data') data: UserInput,
+    @Context() context: ContextType,
+  ): Promise<User> {
+    const currentUser = context.req.user;
+
+    await this.firebaseService.auth().updateUser(currentUser.fid, {
+      displayName: data.name,
+      photoURL: data.image,
+    });
+
+    return { ...currentUser, ...data };
+  }
 
   // @Query(() => [User])
   // @UseGuards(GqlAuthGuard)
@@ -39,11 +78,5 @@ export class UserResolver {
   //   console.log(context.req.user);
 
   //   return this.userRepository.find();
-  // }
-
-  // @Mutation(() => User)
-  // createUser(@Args('data') data: UserInput): Promise<User> {
-  //   const user = new User();
-  //   return this.userRepository.save({ user, ...data });
   // }
 }

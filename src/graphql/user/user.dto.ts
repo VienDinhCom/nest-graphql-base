@@ -1,9 +1,12 @@
 import { Field, InputType } from 'type-graphql';
-import { IsEmail } from 'class-validator';
+import { MaxLength } from 'class-validator';
 
 @InputType()
 export class UserInput {
-  @Field()
-  @IsEmail()
-  email: string;
+  @Field({ nullable: true })
+  @MaxLength(30)
+  name?: string;
+
+  @Field({ nullable: true })
+  image?: string;
 }
