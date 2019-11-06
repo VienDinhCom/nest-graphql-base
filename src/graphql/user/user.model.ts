@@ -15,8 +15,10 @@ export class User {
   id: string;
 
   @Field()
-  @Column()
-  name: string;
+  email: string;
+
+  @Field()
+  verified: boolean;
 
   @CreateDateColumn()
   createdAt: string;

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphqlModule } from './graphql/graphql.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { GraphqlModule } from './graphql/graphql.module';
       entities: [__dirname + '/**/*.model{.ts,.js}'],
       synchronize: true,
     }),
+    AuthModule,
     GraphqlModule,
   ],
 })
