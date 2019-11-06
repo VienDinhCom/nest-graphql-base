@@ -24,6 +24,7 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
       const { uid } = await this.firebaseService
         .auth()
         .verifyIdToken(token, true);
+
       const {
         email,
         emailVerified,
