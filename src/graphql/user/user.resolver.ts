@@ -40,7 +40,7 @@ export class UserResolver {
 
     const firebaseUser = await this.firebaseService.updateUser(fid, data);
 
-    return this.userRepository.save({ ...new User(), ...firebaseUser });
+    return this.userRepository.save(Object.assign(new User(), firebaseUser));
   }
 
   @Mutation(() => User)
