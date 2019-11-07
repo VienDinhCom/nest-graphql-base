@@ -9,5 +9,6 @@ export class PaginationArgs {
   limit: number = 10;
 
   @Field(() => Int)
+  @Min(1)
   page: number = 1;
 }
