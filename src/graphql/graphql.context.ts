@@ -4,4 +4,5 @@ export interface ContextType {
   req: {
     user: User;
   };
+  res: {};
 }
