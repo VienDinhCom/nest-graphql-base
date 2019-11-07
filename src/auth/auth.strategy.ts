@@ -7,7 +7,7 @@ import { User } from '../graphql/user/user.model';
 import { FirebaseService } from '../services/firebase.service';
 
 @Injectable()
-export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
+export class AuthStrategy extends PassportStrategy(Strategy, 'firebase') {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
