@@ -1,3 +1,4 @@
+import * as async from 'async';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate } from 'nestjs-typeorm-paginate';
@@ -69,6 +70,30 @@ export class UserResolver {
 
   @Query(() => Users)
   async users(@Args() { limit, page }: UsersArgs): Promise<Users> {
-    return paginate<User>(this.userRepository, { limit, page });
+    const users = await paginate<User>(this.userRepository, {
+      limit,
+      page,
+    });
+
+    const items: User[] = await async.map(users.items, async item => {
+      const {
+        email,
+        emailVerified,
+        displayName,
+        photoURL,
+        phoneNumber,
+      } = await this.firebaseService.auth().getUser(item.fid);
+
+      return {
+        ...item,
+        email,
+        verified: emailVerified,
+        name: displayName,
+        image: photoURL,
+        phone: phoneNumber,
+      };
+    });
+
+    return { ...users, items };
   }
 }
