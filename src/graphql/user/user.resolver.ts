@@ -30,26 +30,17 @@ export class UserResolver {
     @Args('data') data: UserInput,
     @Context() context: ContextType,
   ): Promise<User> {
-    const firebaseUser = context.req.user;
+    const { fid } = context.req.user;
 
-    let user = await this.userRepository.findOne({
-      where: { fid: firebaseUser.fid },
+    const user = await this.userRepository.findOne({
+      where: { fid },
     });
 
     if (user) throw new BadRequestException('User has been existed.');
 
-    user = await this.userRepository.save({
-      ...new User(),
-      ...firebaseUser,
-      ...data,
-    });
+    const firebaseUser = await this.firebaseService.updateUser(fid, data);
 
-    await this.firebaseService.auth().updateUser(firebaseUser.fid, {
-      displayName: data.name,
-      photoURL: data.image,
-    });
-
-    return user;
+    return this.userRepository.save({ ...new User(), ...firebaseUser });
   }
 
   @Mutation(() => User)
@@ -58,14 +49,11 @@ export class UserResolver {
     @Args('data') data: UserInput,
     @Context() context: ContextType,
   ): Promise<User> {
-    const currentUser = context.req.user;
+    const { fid } = context.req.user;
+    const user = await this.userRepository.findOne({ where: { fid } });
+    const firebaseUser = await this.firebaseService.updateUser(fid, data);
 
-    await this.firebaseService.auth().updateUser(currentUser.fid, {
-      displayName: data.name,
-      photoURL: data.image,
-    });
-
-    return { ...currentUser, ...data };
+    return { ...user, ...firebaseUser };
   }
 
   @Query(() => Users)
@@ -75,23 +63,9 @@ export class UserResolver {
       page,
     });
 
-    const items: User[] = await async.map(users.items, async item => {
-      const {
-        email,
-        emailVerified,
-        displayName,
-        photoURL,
-        phoneNumber,
-      } = await this.firebaseService.auth().getUser(item.fid);
-
-      return {
-        ...item,
-        email,
-        verified: emailVerified,
-        name: displayName,
-        image: photoURL,
-        phone: phoneNumber,
-      };
+    const items: User[] = await async.map(users.items, async user => {
+      const firebaseUser = await this.firebaseService.getUser(user.fid);
+      return { ...user, ...firebaseUser };
     });
 
     return { ...users, items };
