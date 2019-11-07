@@ -1,5 +1,6 @@
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, ArgsType } from 'type-graphql';
 import { MaxLength } from 'class-validator';
+import { PaginationArgs } from '../common/common.dto';
 
 @InputType()
 export class UserInput {
@@ -10,3 +11,6 @@ export class UserInput {
   @Field({ nullable: true })
   image?: string;
 }
+
+@ArgsType()
+export class UsersArgs extends PaginationArgs {}

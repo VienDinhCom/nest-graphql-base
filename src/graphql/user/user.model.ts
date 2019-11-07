@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Pagination } from '../common/common.model';
 
 @Entity()
 @ObjectType()
@@ -38,4 +39,10 @@ export class User {
 
   @UpdateDateColumn({ nullable: true })
   updatedAt: string;
+}
+
+@ObjectType()
+export class Users extends Pagination<User> {
+  @Field(() => User)
+  items: User[];
 }

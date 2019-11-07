@@ -1,9 +1,10 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { paginate } from 'nestjs-typeorm-paginate';
 import { UseGuards, BadRequestException } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { User } from './user.model';
-import { UserInput } from './user.dto';
+import { User, Users } from './user.model';
+import { UserInput, UsersArgs } from './user.dto';
 import { ContextType } from '../graphql.context';
 import { GqlAuthGuard } from '../../auth/auth.guard';
 import { FirebaseService } from '../../services/firebase.service';
@@ -34,7 +35,7 @@ export class UserResolver {
       where: { fid: firebaseUser.fid },
     });
 
-    if (user) throw new BadRequestException('User has been created.');
+    if (user) throw new BadRequestException('User has been existed.');
 
     user = await this.userRepository.save({
       ...new User(),
@@ -66,11 +67,8 @@ export class UserResolver {
     return { ...currentUser, ...data };
   }
 
-  // @Query(() => [User])
-  // @UseGuards(GqlAuthGuard)
-  // users(@Context() context: any): Promise<User[]> {
-  //   console.log(context.req.user);
-
-  //   return this.userRepository.find();
-  // }
+  @Query(() => Users)
+  async users(@Args() { limit, page }: UsersArgs): Promise<Users> {
+    return paginate<User>(this.userRepository, { limit, page });
+  }
 }
