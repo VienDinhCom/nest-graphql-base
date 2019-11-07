@@ -27,10 +27,7 @@ export class FirebaseStrategy extends PassportStrategy(Strategy, 'firebase') {
       const firebaseUser = await this.firebaseService.getUser(uid);
       const user = await this.userRepository.findOne({ where: { fid: uid } });
 
-      return {
-        ...user,
-        ...firebaseUser,
-      };
+      return { ...user, ...firebaseUser };
     } catch (error) {
       throw new UnauthorizedException(error.message);
     }
