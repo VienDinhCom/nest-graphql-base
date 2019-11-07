@@ -1,5 +1,25 @@
 import { Pagination as TypeORMPagination } from 'nestjs-typeorm-paginate';
-import { Field, ObjectType, Int } from 'type-graphql';
+import { Field, ID, ObjectType, Int } from 'type-graphql';
+import {
+  Entity,
+  CreateDateColumn,
+  UpdateDateColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+@Entity()
+@ObjectType()
+export class Base {
+  @Field(() => ID)
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @CreateDateColumn({ nullable: true })
+  createdAt: string;
+
+  @UpdateDateColumn({ nullable: true })
+  updatedAt: string;
+}
 
 @ObjectType()
 export class Pagination<I> implements TypeORMPagination<I> {

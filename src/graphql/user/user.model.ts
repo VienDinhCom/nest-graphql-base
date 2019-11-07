@@ -1,20 +1,10 @@
-import { Field, ID, ObjectType } from 'type-graphql';
-import {
-  Entity,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Pagination } from '../common/common.model';
+import { Entity, Column } from 'typeorm';
+import { Field, ObjectType } from 'type-graphql';
+import { Base, Pagination } from '../common/common.model';
 
 @Entity()
 @ObjectType()
-export class User {
-  @Field(() => ID)
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class User extends Base {
   @Field()
   @Column({ unique: true })
   fid: string;
@@ -33,12 +23,6 @@ export class User {
 
   @Field({ nullable: true })
   phone: string;
-
-  @CreateDateColumn({ nullable: true })
-  createdAt: string;
-
-  @UpdateDateColumn({ nullable: true })
-  updatedAt: string;
 }
 
 @ObjectType()
