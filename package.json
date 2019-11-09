@@ -30,6 +30,7 @@
     "@types/lodash": "^4.14.144",
     "apollo-server-express": "^2.9.7",
     "async": "^3.1.0",
+    "class-transformer": "^0.2.3",
     "dotenv": "^8.2.0",
     "firebase-admin": "^8.7.0",
     "graphql": "^14.5.8",
