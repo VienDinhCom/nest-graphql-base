@@ -1,8 +1,9 @@
 import * as dotenv from 'dotenv';
-import { Module } from '@nestjs/common';
+import { Module, HttpModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GraphqlModule } from './graphql/graphql.module';
 import { AuthModule } from './auth/auth.module';
+import { AppController } from './app.controller';
+import { GraphqlModule } from './graphql/graphql.module';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ const DatabaseModule = TypeOrmModule.forRoot({
 });
 
 @Module({
-  imports: [DatabaseModule, AuthModule, GraphqlModule],
+  imports: [DatabaseModule, HttpModule, AuthModule, GraphqlModule],
+  controllers: [AppController],
 })
 export class AppModule {}
