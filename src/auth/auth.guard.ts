@@ -1,11 +1,9 @@
-import { GqlExecutionContext } from '@nestjs/graphql';
-import { Injectable, ExecutionContext } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Injectable } from '@nestjs/common';
+import { UseRoles } from 'nest-access-control';
+import { AuthGuard } from 'nest-graphql-guard';
+import { Roles, Resources } from './auth.roles';
 
 @Injectable()
-export class GqlAuthGuard extends AuthGuard('firebase') {
-  getRequest(context: ExecutionContext) {
-    const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().req;
-  }
-}
+export class GqlAuthGuard extends AuthGuard('firebase') {}
+
+export { UseRoles, Roles, Resources };

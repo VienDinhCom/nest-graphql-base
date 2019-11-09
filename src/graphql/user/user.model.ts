@@ -1,13 +1,9 @@
 import { Entity, Column } from 'typeorm';
 import { Field, ObjectType, registerEnumType } from 'type-graphql';
 import { Base, Pagination } from '../common/common.model';
+import { Roles } from '../../auth/auth.roles';
 
-enum Role {
-  Authenticated = 'Authenticated',
-  Administrator = 'Administrator',
-}
-
-registerEnumType(Role, { name: 'Role' });
+registerEnumType(Roles, { name: 'Roles' });
 
 // https://stackoverflow.com/questions/51969492/how-to-combine-multiple-property-decorators-in-typescript
 // function FirebaseIdField<T>() {
@@ -36,9 +32,9 @@ export class User extends Base {
   @Field()
   name: string;
 
-  @Field(() => Role)
-  @Column({ type: 'enum', enum: Role })
-  role: Role = Role.Authenticated;
+  @Field(() => [Roles])
+  @Column('simple-array')
+  roles: Roles[] = [Roles.Authenticated];
 
   @Field({ nullable: true })
   image: string;

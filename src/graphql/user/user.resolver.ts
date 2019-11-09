@@ -7,7 +7,7 @@ import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User, Users } from './user.model';
 import { UserInput, UsersArgs } from './user.dto';
 import { ContextType } from '../graphql.context';
-import { GqlAuthGuard } from '../../auth/auth.guard';
+import { GqlAuthGuard, UseRoles, Resources } from '../../auth/auth.guard';
 import { FirebaseService } from '../../services/firebase.service';
 
 @Resolver(() => User)
@@ -20,6 +20,11 @@ export class UserResolver {
 
   @Query(() => User)
   @UseGuards(GqlAuthGuard)
+  @UseRoles({
+    resource: Resources.User,
+    action: 'read',
+    possession: 'own',
+  })
   me(@Context() context: ContextType): User {
     return context.req.user;
   }
@@ -45,6 +50,11 @@ export class UserResolver {
 
   @Mutation(() => User)
   @UseGuards(GqlAuthGuard)
+  @UseRoles({
+    resource: Resources.User,
+    action: 'update',
+    possession: 'own',
+  })
   async updateMe(
     @Args('data') data: UserInput,
     @Context() context: ContextType,
@@ -57,7 +67,16 @@ export class UserResolver {
   }
 
   @Query(() => Users)
-  async users(@Args() { limit, page }: UsersArgs): Promise<Users> {
+  @UseGuards(GqlAuthGuard)
+  @UseRoles({
+    resource: Resources.User,
+    action: 'read',
+    possession: 'any',
+  })
+  async users(
+    @Args() { limit, page }: UsersArgs,
+    @Context() context: ContextType,
+  ): Promise<Users> {
     const users = await paginate<User>(this.userRepository, {
       limit,
       page,
