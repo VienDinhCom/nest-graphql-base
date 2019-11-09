@@ -18,7 +18,7 @@ export class AuthStrategy extends PassportStrategy(Strategy, 'firebase') {
     });
   }
 
-  async validate(token: string) {
+  async validate(token: string): Promise<User> {
     try {
       const { uid } = await this.firebaseService
         .auth()

@@ -9,7 +9,7 @@ import {
 
 @Entity()
 @ObjectType()
-export class Base {
+export abstract class Base {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -22,7 +22,7 @@ export class Base {
 }
 
 @ObjectType()
-export class Pagination<I> implements TypeORMPagination<I> {
+export abstract class Pagination<I> implements TypeORMPagination<I> {
   @Field(() => Int)
   totalItems: number;
 
