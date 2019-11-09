@@ -73,10 +73,7 @@ export class UserResolver {
     action: 'read',
     possession: 'any',
   })
-  async users(
-    @Args() { limit, page }: UsersArgs,
-    @Context() context: ContextType,
-  ): Promise<Users> {
+  async users(@Args() { limit, page }: UsersArgs): Promise<Users> {
     const users = await paginate<User>(this.userRepository, {
       limit,
       page,
