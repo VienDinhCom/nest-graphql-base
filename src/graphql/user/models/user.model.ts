@@ -4,7 +4,7 @@ import { Roles } from '../../../auth/auth.roles';
 import {
   Base,
   EmailField,
-  ImageField,
+  UrlField,
   BooleanField,
   TextField,
   FIDField,
@@ -32,7 +32,7 @@ export class User extends Base {
   @EnumArrayField(Roles)
   roles: Roles[] = [Roles.Authenticated];
 
-  @ImageField(true)
+  @UrlField(true)
   image: string;
 
   @PhoneField(true)

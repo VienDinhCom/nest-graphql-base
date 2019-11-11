@@ -5,7 +5,7 @@ import {
   IsUrl,
   IsString,
   IsBoolean,
-  MaxLength,
+  Length,
   IsPhoneNumber,
   IsEnum,
 } from 'class-validator';
@@ -14,8 +14,7 @@ export function FIDField() {
   return (target: any, propertyKey: string) => {
     Field()(target, propertyKey);
     Column({ unique: true })(target, propertyKey);
-    MinLength(28)(target, propertyKey);
-    MaxLength(28)(target, propertyKey);
+    Length(28, 28)(target, propertyKey);
   };
 }
 
