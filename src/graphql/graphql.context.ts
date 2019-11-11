@@ -1,4 +1,4 @@
-import { User } from './user/user.model';
+import { User } from './user/models';
 
 export interface ContextType {
   req: {

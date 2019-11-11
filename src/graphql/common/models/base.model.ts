@@ -1,4 +1,3 @@
-import { Pagination as TypeORMPagination } from 'nestjs-typeorm-paginate';
 import { Field, ID, ObjectType, Int } from 'type-graphql';
 import {
   Entity,
@@ -19,18 +18,4 @@ export abstract class Base {
 
   @UpdateDateColumn({ nullable: true })
   updatedAt: string;
-}
-
-@ObjectType()
-export abstract class Pagination<I> implements TypeORMPagination<I> {
-  @Field(() => Int)
-  totalItems: number;
-
-  @Field(() => Int)
-  pageCount: number;
-
-  @Field(() => Int)
-  itemCount: number;
-
-  items: I[];
 }

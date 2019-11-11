@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 import * as admin from 'firebase-admin';
 import { Injectable } from '@nestjs/common';
-import { User } from '../graphql/user/user.model';
+import { User } from '../graphql/user/models';
 
 dotenv.config();
 

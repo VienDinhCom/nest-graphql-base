@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-firebase-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from '../graphql/user/user.model';
+import { User } from '../graphql/user/models';
 import { FirebaseService } from '../services/firebase.service';
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
-import { User } from '../graphql/user/user.model';
+import { User } from '../graphql/user/models';
 import { AuthStrategy } from './auth.strategy';
 import { FirebaseService } from '../services/firebase.service';
 

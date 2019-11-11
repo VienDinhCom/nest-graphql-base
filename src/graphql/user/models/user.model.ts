@@ -1,5 +1,6 @@
-import { Entity, Column } from 'typeorm';
-import { Field, ObjectType, registerEnumType } from 'type-graphql';
+import { Entity } from 'typeorm';
+import { ObjectType, registerEnumType } from 'type-graphql';
+import { Roles } from '../../../auth/auth.roles';
 import {
   Base,
   Pagination,
@@ -10,8 +11,7 @@ import {
   FIDField,
   PhoneField,
   EnumArrayField,
-} from '../common';
-import { Roles } from '../../auth/auth.roles';
+} from '../../common';
 
 registerEnumType(Roles, { name: 'Roles' });
 
@@ -38,10 +38,4 @@ export class User extends Base {
 
   @PhoneField(true)
   phone: string;
-}
-
-@ObjectType()
-export class Users extends Pagination<User> {
-  @Field(() => User)
-  items: User[];
 }
