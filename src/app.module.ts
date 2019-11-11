@@ -18,7 +18,7 @@ const {
 const DatabaseModule = TypeOrmModule.forRoot({
   type: 'mysql',
   host: MYSQL_HOST,
-  port: parseInt(MYSQL_PORT),
+  port: parseInt(MYSQL_PORT, 10),
   username: MYSQL_USERNAME,
   password: MYSQL_PASSWORD,
   database: MYSQL_DATABASE,
