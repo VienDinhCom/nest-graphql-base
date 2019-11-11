@@ -3,7 +3,6 @@ import { ObjectType, registerEnumType } from 'type-graphql';
 import { Roles } from '../../../auth/auth.roles';
 import {
   Base,
-  Pagination,
   EmailField,
   ImageField,
   BooleanField,
