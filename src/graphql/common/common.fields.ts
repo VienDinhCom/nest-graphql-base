@@ -51,7 +51,7 @@ export function PhoneField(nullable?: boolean) {
   };
 }
 
-export function ImageField(nullable?: boolean) {
+export function UrlField(nullable?: boolean) {
   return (target: any, propertyKey: string) => {
     Field({ nullable })(target, propertyKey);
     Column({ nullable })(target, propertyKey);
