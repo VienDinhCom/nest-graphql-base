@@ -11,6 +11,7 @@ import { roles } from '../auth/auth.roles';
       installSubscriptionHandlers: true,
       autoSchemaFile: __dirname + '/schema.gql',
       context: ({ req, res }): ContextType => ({ req, res }),
+      playground: true,
     }),
     AccessControlModule.forRoles(roles),
     UserModule,
