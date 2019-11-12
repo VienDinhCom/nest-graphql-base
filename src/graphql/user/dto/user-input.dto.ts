@@ -1,12 +1,11 @@
-import { Field, InputType } from 'type-graphql';
-import { MaxLength } from 'class-validator';
+import { InputType } from 'type-graphql';
+import { TextField, UrlField } from '../../common';
 
 @InputType()
 export class UserInput {
-  @Field({ nullable: true })
-  @MaxLength(30)
+  @TextField(true)
   name?: string;
 
-  @Field({ nullable: true })
+  @UrlField(true)
   image?: string;
 }

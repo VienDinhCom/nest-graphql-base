@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { UseRoles } from 'nest-access-control';
+import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'nest-graphql-guard';
-import { Roles, Resources } from './auth.roles';
+import { UseRoles, Role } from 'nest-access-control';
+import { Resources } from './auth.roles';
 
-@Injectable()
-export class GqlAuthGuard extends AuthGuard('firebase') {}
+function UserCan(...roles: Role[]) {
+  return (target: any, propertyKey: string, descriptor: any) => {
+    UseGuards(AuthGuard('firebase'))(target, propertyKey, descriptor);
+    UseRoles(...roles)(target, propertyKey, descriptor);
+  };
+}
 
-export { UseRoles, Roles, Resources };
+export { UserCan, Resources };

@@ -8,7 +8,18 @@ import {
   Length,
   IsPhoneNumber,
   IsEnum,
+  IsOptional,
 } from 'class-validator';
+
+interface BasicOptions {
+  nullable?: boolean;
+  unique?: boolean;
+}
+
+interface TextOptions extends BasicOptions {
+  minLength?: number;
+  maxLength?: number;
+}
 
 export function FIDField() {
   return (target: any, propertyKey: string) => {
@@ -23,6 +34,10 @@ export function BooleanField(nullable?: boolean) {
     Field({ nullable })(target, propertyKey);
     Column({ nullable })(target, propertyKey);
     IsBoolean()(target, propertyKey);
+
+    if (nullable) {
+      IsOptional()(target, propertyKey);
+    }
   };
 }
 
@@ -31,6 +46,10 @@ export function TextField(nullable?: boolean) {
     Field({ nullable })(target, propertyKey);
     Column({ nullable })(target, propertyKey);
     IsString()(target, propertyKey);
+
+    if (nullable) {
+      IsOptional()(target, propertyKey);
+    }
   };
 }
 
@@ -39,6 +58,10 @@ export function EmailField(nullable?: boolean) {
     Field({ nullable })(target, propertyKey);
     Column({ nullable })(target, propertyKey);
     IsEmail()(target, propertyKey);
+
+    if (nullable) {
+      IsOptional()(target, propertyKey);
+    }
   };
 }
 
@@ -47,6 +70,10 @@ export function PhoneField(nullable?: boolean) {
     Field({ nullable })(target, propertyKey);
     Column({ nullable })(target, propertyKey);
     IsPhoneNumber(null)(target, propertyKey);
+
+    if (nullable) {
+      IsOptional()(target, propertyKey);
+    }
   };
 }
 
@@ -55,6 +82,22 @@ export function UrlField(nullable?: boolean) {
     Field({ nullable })(target, propertyKey);
     Column({ nullable })(target, propertyKey);
     IsUrl()(target, propertyKey);
+
+    if (nullable) {
+      IsOptional()(target, propertyKey);
+    }
+  };
+}
+
+export function EnumField(Enum: object, nullable?: boolean) {
+  return (target: any, propertyKey: string) => {
+    Field(() => [Enum], { nullable })(target, propertyKey);
+    Column({ nullable })(target, propertyKey);
+    IsEnum(Enum)(target, propertyKey);
+
+    if (nullable) {
+      IsOptional()(target, propertyKey);
+    }
   };
 }
 
@@ -63,5 +106,9 @@ export function EnumArrayField(Enum: object, nullable?: boolean) {
     Field(() => [Enum], { nullable })(target, propertyKey);
     Column('simple-array', { nullable })(target, propertyKey);
     IsEnum(Enum)(target, propertyKey);
+
+    if (nullable) {
+      IsOptional()(target, propertyKey);
+    }
   };
 }

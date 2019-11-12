@@ -18,16 +18,15 @@ export class AuthStrategy extends PassportStrategy(Strategy, 'firebase') {
     });
   }
 
-  async validate(token: string): Promise<User> {
+  async validate(token: string): Promise<User | { fid: string }> {
     try {
       const { uid } = await this.firebaseService
         .auth()
         .verifyIdToken(token, true);
 
-      const firebaseUser = await this.firebaseService.getUser(uid);
       const user = await this.userRepository.findOne({ where: { fid: uid } });
 
-      return { ...user, ...firebaseUser };
+      return user || { fid: uid };
     } catch (error) {
       throw new UnauthorizedException(error.message);
     }
