@@ -9,6 +9,7 @@ import {
   IsPhoneNumber,
   IsEnum,
   IsOptional,
+  ArrayUnique,
 } from 'class-validator';
 
 interface BasicOptions {
@@ -106,6 +107,7 @@ export function EnumArrayField(Enum: object, nullable?: boolean) {
     Field(() => [Enum], { nullable })(target, propertyKey);
     Column('simple-array', { nullable })(target, propertyKey);
     IsEnum(Enum, { each: true })(target, propertyKey);
+    ArrayUnique()(target, propertyKey);
 
     if (nullable) {
       IsOptional()(target, propertyKey);
