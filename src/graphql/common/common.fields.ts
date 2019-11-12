@@ -105,7 +105,7 @@ export function EnumArrayField(Enum: object, nullable?: boolean) {
   return (target: any, propertyKey: string) => {
     Field(() => [Enum], { nullable })(target, propertyKey);
     Column('simple-array', { nullable })(target, propertyKey);
-    IsEnum(Enum)(target, propertyKey);
+    IsEnum(Enum, { each: true })(target, propertyKey);
 
     if (nullable) {
       IsOptional()(target, propertyKey);
