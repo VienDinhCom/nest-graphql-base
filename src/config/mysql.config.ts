@@ -1,15 +1,13 @@
-import { config } from 'dotenv';
+import utils from '../utils';
 import { ConnectionOptions } from 'typeorm';
 
 const {
-  parsed: {
-    MYSQL_HOST,
-    MYSQL_PORT,
-    MYSQL_USERNAME,
-    MYSQL_PASSWORD,
-    MYSQL_DATABASE,
-  },
-} = config();
+  MYSQL_HOST,
+  MYSQL_PORT,
+  MYSQL_USERNAME,
+  MYSQL_PASSWORD,
+  MYSQL_DATABASE,
+} = utils.env.getAll();
 
 export const mysqlConfig: ConnectionOptions = {
   type: 'mysql',

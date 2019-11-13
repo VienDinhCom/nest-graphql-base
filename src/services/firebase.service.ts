@@ -1,11 +1,9 @@
-import { config } from 'dotenv';
 import * as admin from 'firebase-admin';
 import { Injectable } from '@nestjs/common';
+import utils from '../utils';
 import { User } from '../graphql/user/models';
 
-const {
-  parsed: { FIREBASE_SERVICE_ACCOUNT, FIREBASE_DATABASE_URL },
-} = config();
+const { FIREBASE_SERVICE_ACCOUNT, FIREBASE_DATABASE_URL } = utils.env.getAll();
 
 const serviceAccount = JSON.parse(FIREBASE_SERVICE_ACCOUNT);
 
